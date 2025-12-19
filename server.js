@@ -44,36 +44,16 @@ app.get("/", (req, res) => {
 
 
 
-
-
-
-app.get("/addanaccount", async (req, res) => {
-
-    const email = "zorluhan.zorlu@umww.com";
-    const password = "zorluhanzorlu";
-
-    const salt = await bcrypt.genSalt(12);
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    await Account.create({
-        email,
-        password: passwordHash,
-    });
-
-    return res.status(201).json({ ok: true });
-
-});
-
 app.post("/Login", async (req, res) => {
     const { email, password } = req.body;
-    if (!username || !password) {
+    if (!email || !password) {
         res.status(400);
         return res.json({ hata: "All blanks must be filled." });
     }
     const user = await Account.findOne({ email });
     if (!user) {
         res.status(400);
-        return res.json({ hata: "No account found with this username. Please check your username." });
+        return res.json({ hata: "No account found with this email. Please check your email." });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
