@@ -65,12 +65,12 @@ app.get("/addanaccount", async (req, res) => {
 });
 
 app.post("/Login", async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     if (!username || !password) {
         res.status(400);
         return res.json({ hata: "All blanks must be filled." });
     }
-    const user = await Account.findOne({ username });
+    const user = await Account.findOne({ email });
     if (!user) {
         res.status(400);
         return res.json({ hata: "No account found with this username. Please check your username." });
@@ -87,8 +87,6 @@ app.post("/Login", async (req, res) => {
         user,
     });
 });
-
-
 
 
 app.listen(port, () => {
